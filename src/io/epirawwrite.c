@@ -15,7 +15,7 @@ s32 __osEPiRawWriteIo(OSPiHandle* pihandle, u32 devAddr, u32 data) {
     }
 #endif
 
-    EPI_SYNC(pihandle, stat, domain);
+    WAIT_ON_IOBUSY(stat);
     IO_WRITE(pihandle->baseAddress | devAddr, data);
 
     return 0;

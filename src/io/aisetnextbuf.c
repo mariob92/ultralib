@@ -43,7 +43,7 @@ s32 osAiSetNextBuffer(void* bufPtr, u32 size) {
         bptr = (u8*)bufPtr - 0x2000;
     }
 
-    if ((((u32)bufPtr + size) & 0x1fff) == 0) {
+    if ((((u32)bufPtr + size) & 0x3fff) == 0x2000) {
         hdwrBugFlag = TRUE;
     } else {
         hdwrBugFlag = FALSE;

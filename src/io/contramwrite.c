@@ -142,6 +142,9 @@ static void __osPackRamWriteData(int channel, u16 address, u8 *buffer) {
     int i;
 
     ptr = (u8 *)__osPfsPifRam.ramarray;
+    for (i = 0; i < ARRLEN(__osPfsPifRam.ramarray) + 1; i++) { // also clear pifstatus
+        __osPfsPifRam.ramarray[i] = 0;
+    }
     __osPfsPifRam.pifstatus = CONT_CMD_EXE;
     ramreadformat.dummy = CONT_CMD_NOP;
     ramreadformat.txsize = CONT_CMD_WRITE_PAK_TX;
@@ -155,7 +158,9 @@ static void __osPackRamWriteData(int channel, u16 address, u8 *buffer) {
     }
     
     if (channel != 0) {
-        for (i = 0; i < channel; i++) { *ptr++ = CONT_CMD_REQUEST_STATUS; }
+        for (i = 0; i < channel; i++) {
+            *ptr++ = CONT_CMD_REQUEST_STATUS;
+        }
     }
     
     *(__OSContRamReadFormat *)ptr = ramreadformat;

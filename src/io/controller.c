@@ -27,9 +27,9 @@ s32 osContInit(OSMesgQueue* mq, u8* bitpattern, OSContStatus* data) {
     __osContinitialized = TRUE;
 
     t = osGetTime();
-    if (t < OS_USEC_TO_CYCLES(500000)) {
+    if (500000 * osClockRate / 1000000 > t) {
         osCreateMesgQueue(&timerMesgQueue, &dummy, 1);
-        osSetTimer(&mytimer, OS_USEC_TO_CYCLES(500000) - t, 0, &timerMesgQueue, &dummy);
+        osSetTimer(&mytimer, 500000 * osClockRate / 1000000 - t, 0, &timerMesgQueue, &dummy);
         osRecvMesg(&timerMesgQueue, &dummy, OS_MESG_BLOCK);
     }
 
@@ -78,7 +78,7 @@ void __osPackRequestData(u8 cmd) {
     __OSContRequesFormat requestHeader;
     s32 i;
 
-    for (i = 0; i < ARRLEN(__osContPifRam.ramarray); i++) {
+    for (i = 0; i < ARRLEN(__osContPifRam.ramarray) + 1; i++) {
         __osContPifRam.ramarray[i] = 0;
     }
 

@@ -41,7 +41,7 @@ s32 __osEPiRawReadIo(OSPiHandle* pihandle, u32 devAddr, u32* data) {
 #endif
     assert(data != NULL);
 
-    EPI_SYNC(pihandle, stat, domain);
+    WAIT_ON_IOBUSY(stat);
     *data = IO_READ(pihandle->baseAddress | devAddr);
 
     return 0;

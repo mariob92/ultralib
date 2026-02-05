@@ -33,8 +33,12 @@ void alEvtqNew(ALEventQueue *evtq, ALEventListItem *items, s32 itemCount)
     evtq->freeList.next  = 0;
     evtq->freeList.prev  = 0;
 
-    for (i = 0; i < itemCount; i++) {
-        alLink((ALLink *)&items[i], &evtq->freeList);
+    if(itemCount > 0){
+        i = 0;
+        do {
+            alLink((ALLink *)&items[i], &evtq->freeList);
+            i++;
+        } while (i != itemCount);
     }
 }
 
@@ -123,26 +127,6 @@ void alEvtqPostEvent(ALEventQueue *evtq, ALEvent *evt, ALMicroTime delta)
     osSetIntMask(mask);
     
 }
-
-void alEvtqFlush(ALEventQueue *evtq)
-{
-    ALLink      *thisNode;
-    ALLink      *nextNode;
-    OSIntMask   mask;
-
-    mask = osSetIntMask(OS_IM_NONE);
-
-    thisNode = evtq->allocList.next;
-    while( thisNode != 0 ) {
-	nextNode = thisNode->next;
-	alUnlink(thisNode);
-	alLink(thisNode, &evtq->freeList);
-	thisNode = nextNode;
-    }
-    
-    osSetIntMask(mask);
-}
-
 
 /*
   This routine flushes events according their type.

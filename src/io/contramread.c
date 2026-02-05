@@ -137,6 +137,9 @@ static void __osPackRamReadData(int channel, u16 address) {
     int i;
 
     ptr = (u8 *)__osPfsPifRam.ramarray;
+    for (i = 0; i < ARRLEN(__osPfsPifRam.ramarray) + 1; i++) { // also clear pifstatus
+        __osPfsPifRam.ramarray[i] = 0;
+    }
     __osPfsPifRam.pifstatus = CONT_CMD_EXE;
     ramreadformat.dummy = CONT_CMD_NOP;
     ramreadformat.txsize = CONT_CMD_READ_PAK_TX;

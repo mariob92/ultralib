@@ -434,7 +434,8 @@ enum ALMsg {
     AL_CSP_LOOPEND,
     AL_CSP_NOTEOFF_EVT,
     AL_TREM_OSC_EVT,
-    AL_VIB_OSC_EVT
+    AL_VIB_OSC_EVT,
+    AL_UNK18_EVT
 };
 
 /*
@@ -589,6 +590,16 @@ typedef struct {
 } ALOscEvent;
 
 typedef struct {
+    float       unk0;
+    float       unk4;
+} ALUnk18Event;
+
+typedef struct {
+    struct struct_81_s * unk0;
+    s32       unk4;
+} ALUnk_Core1_3A70_Event;
+
+typedef struct {
     s16                 	type;
     union {
         ALMIDIEvent     	midi;
@@ -602,6 +613,8 @@ typedef struct {
 	ALSeqpSeqEvent		spseq;
 	ALSeqpBankEvent		spbank;
         ALOscEvent      	osc;
+        ALUnk18Event        unk18;
+        ALUnk_Core1_3A70_Event unk3A70;
     } msg;
 } ALEvent;
 
@@ -658,6 +671,7 @@ typedef struct {
     ALPan               pan;            /* overall pan for this chan        */
     u8                  priority;       /* priority for this chan           */
     u8                  vol;            /* current volume for this chan     */
+    u8                  unkA;
     u8                  fxmix;          /* current fx mix for this chan     */
     u8                  sustain;        /* current sustain pedal state      */
     f32                 pitchBend;      /* current pitch bend val in cents  */

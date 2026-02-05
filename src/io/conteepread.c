@@ -84,6 +84,10 @@ s32 osEepromRead(OSMesgQueue* mq, u8 address, u8* buffer) {
     __osPackEepReadData(address);
     ret = __osSiRawStartDma(OS_WRITE, &__osEepPifRam); // send command to pif
     osRecvMesg(mq, NULL, OS_MESG_BLOCK);
+    for (i = 0; i < ARRLEN(__osEepPifRam.ramarray) + 1; i++) {
+        __osEepPifRam.ramarray[i] = 0xFF;
+    }
+    __osEepPifRam.pifstatus = 0;
     ret = __osSiRawStartDma(OS_READ, &__osEepPifRam); // recv response
     __osContLastCmd = CONT_CMD_READ_EEPROM;
     osRecvMesg(mq, NULL, OS_MESG_BLOCK);
@@ -111,7 +115,7 @@ static void __osPackEepReadData(u8 address) {
     int i;
 
 #if BUILD_VERSION < VERSION_J
-    for (i = 0; i < ARRLEN(__osEepPifRam.ramarray); i++) {
+    for (i = 0; i < ARRLEN(__osEepPifRam.ramarray) + 1; i++) {
         __osEepPifRam.ramarray[i] = CONT_CMD_NOP;
     }
 #endif
