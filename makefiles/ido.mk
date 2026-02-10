@@ -47,6 +47,7 @@ $(BUILD_DIR)/src/log/delay.marker: MIPS_VERSION := -mips1 -o32
 $(BUILD_DIR)/src/log/delay.marker: PICFLAGS := -KPIC
 
 $(BUILD_DIR)/src/os/exceptasm.marker: ASOPTFLAGS := -O2
+$(BUILD_DIR)/src/libc/syncprintf.marker: OPTFLAGS := -O1
 
 ifneq ($(filter $(VERSION),D E F G H I),)
 $(BUILD_DIR)/src/libc/%.marker: OPTFLAGS := -O3
