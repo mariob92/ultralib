@@ -193,7 +193,7 @@ extern float cosf(float angle);
 extern signed short sins (unsigned short angle);
 extern signed short coss (unsigned short angle);
 extern float sqrtf(float value);
-#if 1 /*defined(__sgi) && BUILD_VERSION >= VERSION_K*/
+#if defined(__sgi) && BUILD_VERSION >= VERSION_K
 #pragma intrinsic(sqrtf);
 #endif
 
